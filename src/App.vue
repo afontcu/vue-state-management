@@ -13,32 +13,40 @@
 <script>
 import Vue from 'vue'
 
-const state = new Vue({
-  data () {
-    return {
-      red: 0,
-      blue: 0,
-    }
-  },
-  methods: {
-    voteForRed () { this.red++ },
-    voteForBlue () { this.blue++ },
+const createStore = ({ state, mutations }) => {
+  return new Vue({
+    data () {
+      return { state }
+    },
+    methods: {
+      commit (mutationName) {
+        mutations[mutationName](this.state)
+      },
+    },
+  })
+}
+
+const store = createStore({
+  state: { red: 0, blue: 0 },
+  mutations: {
+    voteForRed (state) { state.red++ },
+    voteForBlue (state) { state.blue++ },
   },
 })
 
 const TotalVotes = {
-  render: h => h('div', `Total votes: ${state.red + state.blue}`),
+  render: h => h('div', `Total votes: ${store.state.red + store.state.blue}`),
 }
 
 const Results = {
-  render: h => h('div', `Red: ${state.red} - Blue: ${state.blue}`),
+  render: h => h('div', `Red: ${store.state.red} - Blue: ${store.state.blue}`),
 }
 
 export default {
   components: { TotalVotes, Results },
   methods: {
-    voteForRed () { state.voteForRed() },
-    voteForBlue () { state.voteForBlue() },
+    voteForRed () { store.commit('voteForRed') },
+    voteForBlue () { store.commit('voteForBlue') },
   },
 }
 </script>
