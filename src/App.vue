@@ -11,31 +11,34 @@
 </template>
 
 <script>
-const state = {
-  red: 0,
-  blue: 0,
-}
+import Vue from 'vue'
+
+const state = new Vue({
+  data () {
+    return {
+      red: 0,
+      blue: 0,
+    }
+  },
+  methods: {
+    voteForRed () { this.red++ },
+    voteForBlue () { this.blue++ },
+  },
+})
 
 const TotalVotes = {
-  data () { return state },
-  render (h) {
-    return h('div', `Total votes: ${this.red + this.blue}`)
-  },
+  render: h => h('div', `Total votes: ${state.red + state.blue}`),
 }
 
 const Results = {
-  data () { return state },
-  render (h) {
-    return h('div', `Red: ${this.red} - Blue: ${this.blue}`)
-  },
+  render: h => h('div', `Red: ${state.red} - Blue: ${state.blue}`),
 }
 
 export default {
   components: { TotalVotes, Results },
-  data () { return state },
   methods: {
-    voteForRed () { this.red++ },
-    voteForBlue () { this.blue++ },
+    voteForRed () { state.voteForRed() },
+    voteForBlue () { state.voteForBlue() },
   },
 }
 </script>
