@@ -1,28 +1,36 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <h1>Election day!</h1>
+    <button @click="voteForRed">Vote for 🔴</button>
+    <button @click="voteForBlue">Vote for 🔵</button>
+
+    <h2>Results</h2>
+    <results :red="red" :blue="blue" />
+    <total-votes :total="red + blue" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+const TotalVotes = {
+  props: ['total'],
+  render (h) {
+    return h('div', `Total votes: ${this.total}`)
+  },
+}
+
+const Results = {
+  props: ['red', 'blue'],
+  render (h) {
+    return h('div', `Red: ${this.red} - Blue: ${this.blue}`)
+  },
+}
 
 export default {
-  name: 'app',
-  components: {
-    HelloWorld,
+  components: { TotalVotes, Results },
+  data: () => ({ red: 0, blue: 0 }),
+  methods: {
+    voteForRed () { this.red++ },
+    voteForBlue () { this.blue++ },
   },
 }
 </script>
-
-<style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
